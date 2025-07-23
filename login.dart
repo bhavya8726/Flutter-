@@ -31,6 +31,7 @@ class _loginState extends State<login> {
               children: [
             TextFormField(
             decoration:InputDecoration(
+            prefixIcon: Icon(Icons.person),
                 alignLabelWithHint: true,
                 labelText: 'Name *',
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(12))
@@ -62,6 +63,7 @@ class _loginState extends State<login> {
                 TextFormField(
                   obscureText: obsurePassword,
                   decoration:InputDecoration(
+                      prefixIcon: Icon(Icons.password),
                     suffixIcon: IconButton(
                       icon:Icon (obsurePassword ? Icons.visibility_off:Icons.visibility),
                       onPressed:(){
@@ -106,7 +108,6 @@ class _loginState extends State<login> {
                   setState(() {
 
                   });
-
                 },child:Text("submit"))
               ],
             ),
