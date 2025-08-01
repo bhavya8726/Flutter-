@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: MatrimonialScreen(),
-  ));
-}
+import 'form.dart'; // ✅ Import UserFormScreen
 
 class MatrimonialScreen extends StatelessWidget {
+  const MatrimonialScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Matrimonial'),
+        title: const Text('Matrimonial'),
         backgroundColor: Colors.red,
       ),
       body: Padding(
@@ -26,28 +22,34 @@ class MatrimonialScreen extends StatelessWidget {
               icon: Icons.person_add,
               label: 'Add User',
               onTap: () {
-                // Navigate to Add User
+                // ✅ Navigate to UserFormScreen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const UserFormScreen(),
+                  ),
+                );
               },
             ),
             buildMenuItem(
               icon: Icons.list,
               label: 'User List',
               onTap: () {
-                // Navigate to User List
+                // TODO: Add navigation
               },
             ),
             buildMenuItem(
               icon: Icons.favorite,
               label: 'Favourite',
               onTap: () {
-                // Navigate to Favourite
+                // TODO: Add navigation
               },
             ),
             buildMenuItem(
               icon: Icons.info,
               label: 'About Us',
               onTap: () {
-                // Navigate to About Us
+                // TODO: Add navigation
               },
             ),
           ],
@@ -70,8 +72,8 @@ class MatrimonialScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, size: 50, color: Colors.black87),
-            SizedBox(height: 10),
-            Text(label, style: TextStyle(fontSize: 16)),
+            const SizedBox(height: 10),
+            Text(label, style: const TextStyle(fontSize: 16)),
           ],
         ),
       ),
