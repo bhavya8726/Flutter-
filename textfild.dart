@@ -1,180 +1,172 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-void main()
-{
-  runApp(text());
-}
-
-class text extends StatefulWidget {
-  const text({super.key});
+class UserFormScreen extends StatefulWidget {
+  const UserFormScreen({super.key});
 
   @override
-  State<text> createState() => _textState();
+  State<UserFormScreen> createState() => _UserFormScreenState();
 }
 
-class _textState extends State<text> {
-
-  TextEditingController controller=TextEditingController();
-  TextEditingController email=TextEditingController();
-  TextEditingController number=TextEditingController();
-  TextEditingController address=TextEditingController();
+class _UserFormScreenState extends State<UserFormScreen> {
+  TextEditingController name = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController number = TextEditingController();
+  TextEditingController address = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
+  String? _gender;
+  List<String> _hobbies = [];
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(title: Text("my_appbar"),),
-        body: Form(
-          key: formKey,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
+    return Scaffold(
+      appBar: AppBar(title: const Text("User Form")),
+      body: Form(
+        key: formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SingleChildScrollView( // Add scrolling for small screens
             child: Column(
               children: [
-                TextFormField(
-                  decoration:InputDecoration(
-            alignLabelWithHint: true,
-                    labelText: 'Name *',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12))
-                  ),
-                  textAlign: TextAlign.center,
-                  controller: controller,
-                  validator: (value){
-                    if(value == null||value.isEmpty)
-                    {
-                      return 'plz enter your name';
-                    }
-                    final pattern=RegExp(r'^[a-zA-z]+$');
-                    if(!pattern.hasMatch(value))
-                    {
-                      return 'plz enter alphabets';
-                    }
-                    return null;
-                  },
-                  onChanged: (value)
-                  {
-                    setState(() {
-
-                    });
-                  },
+                buildTextField(
+                  controller: name,
+                  label: 'Name *',
+                  pattern: r'^[a-zA-Z]+$',
+                  errorMsg: 'Please enter alphabets only',
                 ),
-                SizedBox(
-                  height: 15,
-                ),
-                TextFormField(
-                  decoration:InputDecoration(
-                      labelText: 'email *',
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12))
-                  ),
-                  textAlign: TextAlign.center,
+                const SizedBox(height: 15),
+                buildTextField(
                   controller: email,
-                  validator: (value){
-                    if(value == null||value.isEmpty)
-                    {
-                      return 'plz enter your email';
-                    }
-                    final pattern=RegExp(r'^[a-zA-Z0-9. _%+-]+@[a-zA-Z0-9]$');
-                    if(!pattern.hasMatch(value))
-                    {
-                      return 'plz enter email';
-                    }
-
-                    return null;
-                  },
-                  onChanged: (value)
-                  {
-                    setState(() {
-
-                    });
-                  },
+                  label: 'Email *',
+                  pattern: r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+                  errorMsg: 'Please enter a valid email',
                 ),
-                SizedBox(
-                  height: 15,
-                ),
-                TextFormField(
-                  decoration:InputDecoration(
-
-                      labelText: 'phone_number *',
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12))
-                  ),
-                  textAlign: TextAlign.center,
+                const SizedBox(height: 15),
+                buildTextField(
                   controller: number,
-                  validator: (value){
-                    if(value == null||value.isEmpty)
-                    {
-                      return 'plz enter your number';
-                    }
-                    final pattern=RegExp(r'^[0-9]{10}$');
-                    if(!pattern.hasMatch(value))
-                    {
-                      return 'plz enter number ans only 10 number allowed';
-                    }
-                    return null;
-                  },
-                  onChanged: (value)
-                  {
-                    setState(() {
-
-                    });
-                  },
+                  label: 'Phone Number *',
+                  pattern: r'^[0-9]{10}$',
+                  errorMsg: 'Enter 10-digit number only',
                 ),
-                SizedBox(
-                  height: 15,
-                ),
-                TextFormField(
-                  decoration:InputDecoration(
-
-                      labelText: 'address *',
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12))
-                  ),
-                  textAlign: TextAlign.center,
+                const SizedBox(height: 15),
+                buildTextField(
                   controller: address,
-                  validator: (value){
-                    if(value == null||value.isEmpty)
-                    {
-                      return 'plz enter your address';
-                    }
-                    final pattern=RegExp(r'^[a-zA-z0-9]+$');
-                    if(!pattern.hasMatch(value))
-                    {
-                      return 'plz enter address';
-                    }
-                    return null;
-                  },
-                  onChanged: (value)
-                  {
+                  label: 'Address *',
+                  pattern: r'^[a-zA-Z0-9\s,.-]+$',
+                  errorMsg: 'Please enter a valid address',
+                ),
+                CheckboxListTile(
+                  title: const Text('Hobbies: Reading'),
+                  value: _hobbies.contains('Reading'),
+                  onChanged: (value) {
                     setState(() {
-
+                      if (value == true) {
+                        _hobbies.add('Reading');
+                      } else {
+                        _hobbies.remove('Reading');
+                      }
                     });
                   },
                 ),
-                SizedBox(
-                  height: 10,
+                CheckboxListTile(
+                  title: const Text('Hobbies: Traveling'),
+                  value: _hobbies.contains('Traveling'),
+                  onChanged: (value) {
+                    setState(() {
+                      if (value == true) {
+                        _hobbies.add('Traveling');
+                      } else {
+                        _hobbies.remove('Traveling');
+                      }
+                    });
+                  },
                 ),
-                ElevatedButton(onPressed:(){
-                  if(formKey.currentState!.validate())
-                  {
-                    print('validated');
-                  }
-                  else
-                  {
-                    print('not validated');
-                  }
-                  setState(() {
+                DropdownButtonFormField<String>(
+                  decoration: const InputDecoration(labelText: 'Gender'),
+                  value: _gender,
+                  items: ['Male', 'Female', 'Other']
+                      .map((gender) => DropdownMenuItem(
+                    value: gender,
+                    child: Text(gender),
+                  ))
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _gender = value;
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please select your gender';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 15),
+                ElevatedButton(
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Form Submitted Successfully')),
+                      );
 
-                  });
-                  controller.clear();
-                  number.clear();
-                  email.clear();
-                  address.clear();
-                },child:Text("submit"))
-                ],
+                      // Print values
+                      print('Name: ${name.text}');
+                      print('Email: ${email.text}');
+                      print('Number: ${number.text}');
+                      print('Address: ${address.text}');
+                      print('Gender: $_gender');
+                      print('Hobbies: $_hobbies');
+
+                      // Clear fields
+                      name.clear();
+                      number.clear();
+                      email.clear();
+                      address.clear();
+
+                      setState(() {
+                        _gender = null;
+                        _hobbies.clear();
+                      });
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Validation failed')),
+                      );
+                    }
+                  },
+                  child: const Text("Submit"),
+                ),
+              ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required String pattern,
+    required String errorMsg,
+  }) {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+      textAlign: TextAlign.center,
+      controller: controller,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter your ${label.toLowerCase()}';
+        }
+        final regex = RegExp(pattern);
+        if (!regex.hasMatch(value)) {
+          return errorMsg;
+        }
+        return null;
+      },
     );
   }
 }
