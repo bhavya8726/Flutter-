@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class UserFormScreen extends StatefulWidget {
   const UserFormScreen({super.key});
@@ -12,6 +13,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
   TextEditingController email = TextEditingController();
   TextEditingController number = TextEditingController();
   TextEditingController address = TextEditingController();
+  TextEditingController dateController=TextEditingController();
 
   final formKey = GlobalKey<FormState>();
   String? _gender;
@@ -55,6 +57,34 @@ class _UserFormScreenState extends State<UserFormScreen> {
                   pattern: r'^[a-zA-Z0-9\s,.-]+$',
                   errorMsg: 'Please enter a valid address',
                 ),
+                const SizedBox(height: 15),
+                // date
+                TextField(
+                  readOnly: true,
+                  controller: dateController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Select Your BirthDate",
+                    prefixIcon: Icon(Icons.date_range),
+                  ),
+                  onTap: () async {
+                    print(DateTime.now().toString());
+                    DateTime?  selectedDate=await showDatePicker(
+                      initialDate: DateTime.now(),
+                      context: context,
+                      firstDate: DateTime(1965),
+                      lastDate: DateTime.now(),
+                    );
+                    if(selectedDate!=null)
+                    {
+                      dateController.text=DateFormat("dd/MM/yyyy").format(selectedDate);
+                      setState(() {
+
+                      });
+                    }
+                  },
+                ),
+                const SizedBox(height: 15),
                 CheckboxListTile(
                   title: const Text('Hobbies: Reading'),
                   value: _hobbies.contains('Reading'),
@@ -81,6 +111,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
                     });
                   },
                 ),
+
                 DropdownButtonFormField<String>(
                   decoration: const InputDecoration(labelText: 'Gender'),
                   value: _gender,
