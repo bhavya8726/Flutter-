@@ -57,6 +57,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   },
                 ),
                 TextFormField(
+                  maxLength: 10,
                   decoration: InputDecoration(labelText: 'Mobile Number'),
                   keyboardType: TextInputType.phone,
                   validator: (value) {
@@ -90,9 +91,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   value: _gender,
                   items: ['Male', 'Female', 'Other']
                       .map((gender) => DropdownMenuItem(
-                            value: gender,
-                            child: Text(gender),
-                          ))
+                    value: gender,
+                    child: Text(gender),
+                  ))
                       .toList(),
                   onChanged: (value) {
                     setState(() {
